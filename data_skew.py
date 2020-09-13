@@ -1,4 +1,4 @@
-#explode the small DF and multiple random to big DF
+#explode the small DF and multiply random to big DF
 from pyspark.sql.functions import *
 from pyspark.sql.types import IntegerType
 from pyspark.sql.functions import col
