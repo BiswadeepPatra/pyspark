@@ -22,9 +22,9 @@ if __name__=="__main__":
     # df_wind=df.withColumn("average_sal",F.avg(F.col("salary")).over(window_spec)).withColumn("total_salary",F.sum(F.col("salary")).over(window_spec))
     # df_wind.show()
 
-    df.withColumn("rank",F.dense_rank().over(window_spec))\
-     .withColumn("rank",F.rank().over(window_spec))\
-     .withColumn("denserank",F.dense_rank().over(window_spec)).show()
+    df.withColumn("denserank",F.dense_rank().over(window_spec))\
+        .withColumn("rank",F.rank().over(window_spec))\
+        .withColumn("denserank",F.dense_rank().over(window_spec)).show()
     #
     # +---+-----+------+
     # | id | dept | salary |
@@ -40,7 +40,7 @@ if __name__=="__main__":
     # | 9 | dev | 4400 |
     # | 10 | dev | 4400 |
     # +---+-----+------+
-    #
+    # with group by
     # +-----+------------------+------------+
     # | dept | average_salary | total_salary |
     # +-----+------------------+------------+
@@ -48,7 +48,7 @@ if __name__=="__main__":
     # | sales | 4066.6666666666665 | 12200 |
     # | admin | 2900.0 | 5800 |
     # +-----+------------------+------------+
-    #
+    # with window funtions
     # +---+-----+------+------------------+------------+
     # | id | dept | salary | average_sal | total_salary |
     # +---+-----+------+------------------+------------+
@@ -62,4 +62,47 @@ if __name__=="__main__":
     # | 4 | sales | 4000 | 4066.6666666666665 | 12200 |
     # | 1 | admin | 3100 | 3100.0 | 3100 |
     # | 5 | admin | 2700 | 2900.0 | 5800 |
-    # +---+-----+------+------------------+------------+
+#     # +---+-----+------+------------------+------------+
+# +---+-----+------+-------+
+# | id| dept|salary|row_num|
+# +---+-----+------+-------+
+# |  7|  dev|  5200|      1|
+# |  9|  dev|  4400|      2|
+# | 10|  dev|  4400|      3|
+# |  8|  dev|  3700|      4|
+# |  6|  dev|  3400|      5|
+# |  1|sales|  4200|      1|
+# |  3|sales|  4000|      2|
+# |  4|sales|  4000|      3|
+# |  1|admin|  3100|      1|
+# |  5|admin|  2700|      2|
+# +---+-----+------+-------+
+# +---+-----+------+----+
+# | id| dept|salary|rank|
+# +---+-----+------+----+
+# |  7|  dev|  5200|   1|
+# |  9|  dev|  4400|   2|
+# | 10|  dev|  4400|   2|
+# |  8|  dev|  3700|   4|
+# |  6|  dev|  3400|   5|
+# |  1|sales|  4200|   1|
+# |  3|sales|  4000|   2|
+# |  4|sales|  4000|   2|
+# |  1|admin|  3100|   1|
+# |  5|admin|  2700|   2|
+# +---+-----+------+----+
+
+# +---+-----+------+---------+
+# | id| dept|salary|denserank|
+# +---+-----+------+---------+
+# |  7|  dev|  5200|        1|
+# |  9|  dev|  4400|        2|
+# | 10|  dev|  4400|        2|
+# |  8|  dev|  3700|        3|
+# |  6|  dev|  3400|        4|
+# |  1|sales|  4200|        1|
+# |  3|sales|  4000|        2|
+# |  4|sales|  4000|        2|
+# |  1|admin|  3100|        1|
+# |  5|admin|  2700|        2|
+# +---+-----+------+---------+
